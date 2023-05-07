@@ -1,5 +1,5 @@
 //Arreglo que almacena los productos agregados al carrito de compras 
-let carrito = [];
+var carrito = [];
 var localStorage = window.localStorage;
 var codTienda = localStorage.getItem('tiendaActual');
 let tienda = {};
@@ -92,7 +92,7 @@ const obtenerAccesoriosMujer = () => {
   .then(result => {
     accesoriosMujer=result; 
     console.log(result);
-    renderizarAccesoriosMujer(); 
+    renderizarAccesoriosMujer();
 }) 
 }
 obtenerAccesoriosMujer();
@@ -219,26 +219,27 @@ function mostrarTienda () {
 // Funciones de renderizado de productos-----------------------------------------------------------------
 function renderizarRopaMujer() {
     
-    document.getElementById('nav-catRopaM').innerHTML =
+    document.getElementById('nav-catRopa').innerHTML =
     `
     <i class="fas fa-bars"></i>
     <i class="fa-solid fa-angles-left" onclick="atras(1)" ></i>
     <i class="fas fa-search"></i>
     `
-    document.getElementById('encabezado-ropaM').innerHTML =
+    document.getElementById('encabezado-ropa').innerHTML =
         `
         <div style="text-align: center">
             <img style="width:180px; height: 30px; margin: 2rem"  src="./img/${tienda.logo}" >
         </div>
         <div class="contenedor-carrito">
         <h3>ROPA</h3> 
-            <button type="button" class="btn btn-primary btn-carrito" data-bs-toggle="modal" data-bs-target="#modalCarrito">
+            <button onclick="mostrarCarrito()" type="button" class="btn btn-primary btn-carrito" >
                 <i class="fa-solid fa-cart-shopping" ></i>
             </button> 
         </div>
         `;
     
     ropaMujer.forEach(p => {
+        
         document.getElementById('ropa-mujer').innerHTML+=
         ` 
         <div class="card" style="width: 10rem;">
@@ -246,25 +247,26 @@ function renderizarRopaMujer() {
             <div class="card-body">
                 <h6 class="card-title">${p.descripcion}</h6>
                 <p class="card-text">${p.precio} HNL</p>
-                <button type="button" class="btn btn-primary btn-comprar" data-bs-toggle="modal" data-bs-target="#modalComprar${p._id}">
+                <button type="button" class="btn btn-primary btn-comprar" onclick="agregarAlCarrito('${p._id}', (ropaMujer))">
                     comprar
                 </button>
             </div>
         </div>
         `
+        console.log("terror")
         modalComprar(p);
     });  
 }
 
 function renderizarZapatosMujer() {
     
-    document.getElementById('nav-catZapatosM').innerHTML =
+    document.getElementById('nav-catZapatos').innerHTML =
     `
     <i class="fas fa-bars"></i>
     <i class="fa-solid fa-angles-left" onclick="atras(1)" ></i>
     <i class="fas fa-search"></i>
     `
-    document.getElementById('encabezado-zapatosM').innerHTML =
+    document.getElementById('encabezado-zapatos').innerHTML =
         `
         <div style="text-align: center">
             <img style="width:180px; height: 30px; margin: 2rem"  src="./img/${tienda.logo}" >
@@ -285,7 +287,7 @@ function renderizarZapatosMujer() {
             <div class="card-body">
                 <h6 class="card-title">${p.descripcion}</h6>
                 <p class="card-text">${p.precio} HNL</p>
-                <button type="button" class="btn btn-primary btn-comprar" data-bs-toggle="modal" data-bs-target="#modalComprar${p._id}">
+                <button type="button" onclick="agregarAlCarrito('${p._id}', (zapatosMujer))" class="btn btn-primary btn-comprar" ">
                     comprar
                 </button>
             </div>
@@ -298,13 +300,13 @@ renderizarZapatosMujer()
 
 function renderizarAccesoriosMujer() {
     
-    document.getElementById('nav-catAccesoriosM').innerHTML =
+    document.getElementById('nav-catAccesorios').innerHTML =
     `
     <i class="fas fa-bars"></i>
     <i class="fa-solid fa-angles-left" onclick="atras(1)" ></i>
     <i class="fas fa-search"></i>
-    `
-    document.getElementById('encabezado-accesoriosM').innerHTML =
+    `;
+    document.getElementById('accesorios-mujer').innerHTML =
         `
         <div style="text-align: center">
             <img style="width:180px; height: 30px; margin: 2rem"  src="./img/${tienda.logo}" >
@@ -325,8 +327,8 @@ function renderizarAccesoriosMujer() {
             <div class="card-body">
                 <h6 class="card-title">${p.descripcion}</h6>
                 <p class="card-text">${p.precio} HNL</p>
-                <button type="button" class="btn btn-primary btn-comprar" data-bs-toggle="modal" data-bs-target="#modalComprar${p._id}">
-                    comprar
+                <button type="button" onclick="agregarAlCarrito('${p._id}', (accesoriosMujer))" class="btn-primary btn btn-primary btn-comprar">
+                    Comprar
                 </button>
             </div>
         </div>
@@ -338,7 +340,7 @@ function renderizarAccesoriosMujer() {
 //Ventana modal del boton "comprar"
 function modalComprar(producto) {
     
-    document.getElementById('ropa-mujer').innerHTML =
+    /**document.getElementById('ropa-mujer').innerHTML =
     `
     <div class="modal fade" id="modalComprar${producto._id}" tabindex="-1" aria-labelledby="modalComprarLabel${producto._id}" aria-hidden="true">
         <div class="modal-dialog">
@@ -362,21 +364,29 @@ function modalComprar(producto) {
             </div>
         </div>
     </div>
-    `
+    `**/
 }
 
-function agregarAlCarrito(id){
-    let producto = ropa.find(p => p.id === id);
-    let talla = document.getElementById(`talla-${id}`).value;
-    let item ={
+function agregarAlCarrito(id, ropa){
+    console.log(id);
+    ropa.forEach(element => {
+        if(element._id==id){
+            producto=element;
+            console.log(producto);
+        }
+    });
+    //let producto = ropa.find(p => p.id === id);
+    //let talla = document.getElementById(`talla-${id}`).value;
+    let item = {
         producto: producto,
-        talla: talla
+    
+
     };
     carrito.push(item);
-    actualizarCarrito();
+    //actualizarCarrito();
 }
 
-function actualizarCarrito(){
+/**function actualizarCarrito(){
     let modalCarrito = document.getElementById('modalBody');
     modalCarrito.innerHTML = '';
     carrito.forEach(item => {
@@ -392,27 +402,60 @@ function actualizarCarrito(){
             document.getElementById('finalizar-compra').classList.add('d-none');
           }
     });
-}
+}*/
 
 //Ventanas modales 
 function modalCarrito() {
-    document.getElementById('btnCarrito').innerHTML+=
-    `
-    <div class="modal fade" id="modalCarrito" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Tu carrito</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" id="modalBody">
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="finalizar-compra" class="btn btn-primary  btns-modal">Finalizar compra</button>
-      </div>
-    </div>
-  </div>
-</div>
-    `
+    document.getElementById('btnCarrito').innerHTML
+
+
 }
 modalCarrito();
+
+//Nueva Orden
+
+function registrarOrden(){
+    let txtNombreCliente =  `${clienteActual.nombre} ${clienteActual.apellido}`; 
+    let txtDireccion = document.getElementById('direccion-cliente').value; 
+    let txtCiudad = document.getElementById('ciudad-cliente').value; 
+    let txtTelefono = document.getElementById('telefono-cliente').value; 
+    let txtTienda = tienda.nombreTienda; 
+    let arrayItems = carrito; 
+    let pendiente = ["tomada", "en camino", "en destino"]; 
+
+    fetch('http://localhost:8000/ordenes', {
+      method: 'POST', 
+      headers: {
+        "Content-Type": "application/json", 
+      },
+      body: JSON.stringify({
+           nombreCliente: txtNombreCliente,
+           direccion: txtDireccion,
+           ciudad: txtCiudad, 
+           telefono: txtTelefono,
+           tienda: txtTienda,
+           items: arrayItems,
+           disponible: true,
+           pendiente: pendiente
+
+        })
+      })
+    .then(response => response.json())
+    .then(result => {
+      console.log(result);
+    }) 
+  }
+
+  function mostrarCarrito() {
+    document.getElementById('ordenes').innerHTML = '';
+    carrito.forEach(c => {
+        document.getElementById('ordenes').innerHTML+=
+            `
+            <p>Descripcion: ${c.descripcion}</p>
+            <p>Precio: ${c.precio}</p>
+            <br>
+     `
+    })
+    window.location.href='./orden.html'
+    
+  }

@@ -11,6 +11,7 @@ let zapatosHombre = [];
 let accesoriosMujer = []; 
 let accesoriosHombre = []; 
 
+
 //Obteniendo empresas
 const obtenerEmpresa = () => {
     fetch(`http://localhost:8000/empresas/${codTienda}`, {
@@ -387,6 +388,7 @@ function registrarOrden(){
     .then(response => response.json())
     .then(result => {
       console.log(result);
+      alert("Orden procesada!! porfavor estate pendiente a tu telefono")
     }) 
   }
 

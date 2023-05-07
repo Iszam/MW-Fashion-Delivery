@@ -66,7 +66,7 @@ const autenticarCliente = () => {
       .then(result => {
         clienteActual = result; 
         console.log(result);
-        localStorage.setItem('IdClienteActual', clienteActual._id);
+        localStorage.setItem('ClienteActual', JSON.stringify(clienteActual));
         mostrarSeccion(3);
       })
       .catch(error => console.log('error', error));

@@ -2,7 +2,8 @@
 var carrito = [];
 var localStorage = window.localStorage;
 var codTienda = localStorage.getItem('tiendaActual');
-let tienda = {};
+var clienteActual=JSON.parse(localStorage.getItem('clienteActual'));
+var tienda;
 let categorias = {};
 let ropaMujer = [];
 let ropaHombre = []; 
@@ -10,6 +11,7 @@ let zapatosMujer = [];
 let zapatosHombre = []; 
 let accesoriosMujer = []; 
 let accesoriosHombre = []; 
+
 
 
 //Obteniendo empresas

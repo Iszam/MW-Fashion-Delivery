@@ -273,7 +273,7 @@ function renderizarZapatosMujer() {
         </div>
         <div class="contenedor-carrito">
         <h3>ZAPATOS</h3> 
-            <button type="button" class="btn btn-primary btn-carrito" onclick"mostrarCarrito()">
+            <button type="button" class="btn btn-primary btn-carrito" onclick="mostrarCarrito()">
                 <i class="fa-solid fa-cart-shopping" ></i>
             </button> 
         </div>
@@ -313,7 +313,7 @@ function renderizarAccesoriosMujer() {
         </div>
         <div class="contenedor-carrito">
         <h3>ACCESORIOS</h3> 
-            <button type="button" class="btn btn-primary btn-carrito" onclick"mostrarCarrito()">
+            <button type="button" class="btn btn-primary btn-carrito" onclick="mostrarCarrito()">
                 <i class="fa-solid fa-cart-shopping" ></i>
             </button> 
         </div>
@@ -391,6 +391,7 @@ function registrarOrden(){
   }
 
   function mostrarCarrito() {
+    window.location.href="./orden.html"
     carrito.forEach(c => {
         document.getElementById('ordenes-carrito').innerHTML+=
             `

@@ -254,7 +254,7 @@ function renderizarRopaMujer() {
         </div>
         `
         console.log("terror")
-        modalComprar(p);
+        ;
     });  
 }
 
@@ -273,7 +273,7 @@ function renderizarZapatosMujer() {
         </div>
         <div class="contenedor-carrito">
         <h3>ZAPATOS</h3> 
-            <button type="button" class="btn btn-primary btn-carrito" data-bs-toggle="modal" data-bs-target="#modalCarrito">
+            <button type="button" class="btn btn-primary btn-carrito" onclick"mostrarCarrito()">
                 <i class="fa-solid fa-cart-shopping" ></i>
             </button> 
         </div>
@@ -293,7 +293,7 @@ function renderizarZapatosMujer() {
             </div>
         </div>
         `
-        modalComprar(p);
+        
     });  
 }
 renderizarZapatosMujer()
@@ -313,7 +313,7 @@ function renderizarAccesoriosMujer() {
         </div>
         <div class="contenedor-carrito">
         <h3>ACCESORIOS</h3> 
-            <button type="button" class="btn btn-primary btn-carrito" data-bs-toggle="modal" data-bs-target="#modalCarrito">
+            <button type="button" class="btn btn-primary btn-carrito" onclick"mostrarCarrito()">
                 <i class="fa-solid fa-cart-shopping" ></i>
             </button> 
         </div>
@@ -333,39 +333,11 @@ function renderizarAccesoriosMujer() {
             </div>
         </div>
         `
-        modalComprar(p);
+      
     });  
 }
 
-//Ventana modal del boton "comprar"
-function modalComprar(producto) {
-    
-    /**document.getElementById('ropa-mujer').innerHTML =
-    `
-    <div class="modal fade" id="modalComprar${producto._id}" tabindex="-1" aria-labelledby="modalComprarLabel${producto._id}" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="modalComprarLabel${producto._id}">${producto.descripcion}</h1>
-                </div>
-                <div class="modal-body">
-                <select id="talla-${producto._id}" class="form-select" aria-label="Default select example">
-                    <option selected>Seleccionar talla</option>
-                        <option value="XS">XS</option>
-                        <option value="S">S</option>
-                        <option value="L">L</option>
-                        <option value="XL">XL</option>
-                    </select>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btns-modal" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary btns-modal"  onclick="agregarAlCarrito(${producto._id})"  data-bs-dismiss="modal">Agregar al carrito</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    `**/
-}
+
 
 function agregarAlCarrito(id, ropa){
     console.log(id);
@@ -375,42 +347,14 @@ function agregarAlCarrito(id, ropa){
             console.log(producto);
         }
     });
-    //let producto = ropa.find(p => p.id === id);
-    //let talla = document.getElementById(`talla-${id}`).value;
+   
     let item = {
         producto: producto,
     
 
     };
     carrito.push(item);
-    //actualizarCarrito();
 }
-
-/**function actualizarCarrito(){
-    let modalCarrito = document.getElementById('modalBody');
-    modalCarrito.innerHTML = '';
-    carrito.forEach(item => {
-        modalCarrito.innerHTML += 
-        `
-        <p>${item.producto.nombre} - Talla ${item.talla}</p>
-        <b style="text-aling: right">${item.producto.precio} HNL</b>
-        <hr>
-        `
-        if (carrito.length > 1) {
-            document.getElementById('finalizar-compra').classList.remove('d-none');
-          } else {
-            document.getElementById('finalizar-compra').classList.add('d-none');
-          }
-    });
-}*/
-
-//Ventanas modales 
-function modalCarrito() {
-    document.getElementById('btnCarrito').innerHTML
-
-
-}
-modalCarrito();
 
 //Nueva Orden
 
@@ -447,15 +391,18 @@ function registrarOrden(){
   }
 
   function mostrarCarrito() {
-    document.getElementById('ordenes').innerHTML = '';
     carrito.forEach(c => {
-        document.getElementById('ordenes').innerHTML+=
+        document.getElementById('ordenes-carrito').innerHTML+=
             `
             <p>Descripcion: ${c.descripcion}</p>
             <p>Precio: ${c.precio}</p>
             <br>
      `
-    })
-    window.location.href='./orden.html'
+    });
+    window.location.href='orden.html'
     
+    if(carrito.length>1){
+    document.getElementById('ordenes').innerHTML+=
+    '<button style="margin: 0 auto; display: block;" id="btnfinalizarCompra" type="button" class="btn-inicio-sesion" class="btn btn-primary" onclick="registrarOrden(); mostrarSeccion(1)">Finalizar compra</button>'
   }
+}

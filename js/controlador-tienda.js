@@ -1,0 +1,418 @@
+//Arreglo que almacena los productos agregados al carrito de compras 
+let carrito = [];
+var localStorage = window.localStorage;
+var codTienda = localStorage.getItem('tiendaActual');
+let tienda = {};
+let categorias = {};
+let ropaMujer = [];
+let ropaHombre = []; 
+let zapatosMujer = []; 
+let zapatosHombre = []; 
+let accesoriosMujer = []; 
+let accesoriosHombre = []; 
+
+//Obteniendo empresas
+const obtenerEmpresa = () => {
+    fetch(`http://localhost:8000/empresas/${codTienda}`, {
+        method: 'GET', 
+        headers: {
+            "Content-Type": "application/json", 
+          }
+        })
+  .then(response => response.json())
+  .then(result => {
+    tienda=result; 
+    console.log(result);
+}) 
+}
+obtenerEmpresa(); 
+
+//Obteniendo categorias de genero y producto 
+const obtenercategorias = () => {
+    fetch(`http://localhost:8000/categorias/${codTienda}`, {
+        method: 'GET', 
+        headers: {
+            "Content-Type": "application/json", 
+          }
+        })
+  .then(response => response.json())
+  .then(result => {
+    categorias=result; 
+    console.log(result);
+    mostrarTienda();
+    renderizarNavbar();
+    renderizarFooter();
+    renderizarCategoriaMujer();
+    renderizarCategoriaHombre()
+}) 
+}
+obtenercategorias();
+
+//Obteniendo productos por categorias (ropa, zapatos o accesorios)------------------------
+const obtenerRopaMujer = () => {
+    fetch(`http://localhost:8000/productos/${codTienda}fr`, {
+        method: 'GET', 
+        headers: {
+            "Content-Type": "application/json", 
+          }
+        })
+  .then(response => response.json())
+  .then(result => {
+    ropaMujer=result; 
+    console.log(result);
+    renderizarRopaMujer();
+}) 
+}
+obtenerRopaMujer(); 
+
+const obtenerZapatosMujer = () => {
+    fetch(`http://localhost:8000/productos/${codTienda}fz`, {
+        method: 'GET', 
+        headers: {
+            "Content-Type": "application/json", 
+          }
+        })
+  .then(response => response.json())
+  .then(result => {
+    zapatosMujer=result; 
+    console.log(result);
+    renderizarZapatosMujer();
+}) 
+}
+obtenerZapatosMujer(); 
+
+const obtenerAccesoriosMujer = () => {
+    fetch(`http://localhost:8000/productos/${codTienda}fa`, {
+        method: 'GET', 
+        headers: {
+            "Content-Type": "application/json", 
+          }
+        })
+  .then(response => response.json())
+  .then(result => {
+    accesoriosMujer=result; 
+    console.log(result);
+    renderizarAccesoriosMujer(); 
+}) 
+}
+obtenerAccesoriosMujer();
+
+
+function renderizarNavbar () {
+    document.getElementById(`nav-${codTienda}`).innerHTML =
+    `
+    <i class="fas fa-bars"></i>
+    <i class="fa-solid fa-angles-left" onclick="volverATiendas('index-cliente.html#3')" ></i>
+        <i class="fas fa-user"></i>
+    
+    `
+}
+
+function renderizarFooter () {
+    document.getElementById('foot-categorias').innerHTML =
+    `
+    <b style="color: #17382B;" >¡Siguenos!</b>
+        <div class="redes-sociales">
+            <i class="fab fa-instagram"></i>
+            <i class="fab fa-tiktok"></i>
+            <i class="fab fa-facebook"></i>
+            <i class="fab fa-youtube"></i>
+        </div>
+        <div style="text-align: center;">
+        <span>Política de Privacidad</span>
+        <span> | Condiciones de compra</span>
+        </div>
+    `
+}
+
+function renderizarCategoriaMujer() {
+    let mujer = categorias.categorias[0];
+    document.getElementById('nav-catMujer').innerHTML =
+    `
+    <i class="fas fa-bars"></i>
+            <i class="fa-solid fa-angles-left" onclick="mostrarSeccion(0)" ></i>
+            <i class="fas fa-user"></i>
+    `;
+    document.getElementById('categoria-mujer').innerHTML =
+    `
+    <div>
+    <img style="width:180px; height: 30px; margin: 2rem;"  src="./img/${tienda.logo}">
+    </div>
+    <div class="producto" style="background-image:url(./img/${mujer.ropa})"
+     onclick=" mostrarProductos(3)">
+        <h3>ROPA</h3>
+    </div>
+    <br>
+    <div class="producto" style="background-image:url(./img/${mujer.zapatos})" onclick="  mostrarProductos(4)">
+        <h3>ZAPATOS</h3>
+    </div>
+    <br>
+    <div class="producto" style="background-image:url(./img/${mujer.accesorios})" onclick=" mostrarProductos(5)">
+        <h3>ACCESORIOS</h3>
+    </div>
+    <br>
+    `
+}
+
+function renderizarCategoriaHombre() {
+    let hombre = categorias.categorias[1];
+    document.getElementById('nav-catHombre').innerHTML =
+    `
+    <i class="fas fa-bars"></i>
+            <i class="fa-solid fa-angles-left" onclick="mostrarSeccion(0)" ></i>
+            <i class="fas fa-user"></i>
+    `;
+    document.getElementById('categoria-hombre').innerHTML =
+    `
+    <div>
+    <img style="width:180px; height: 30px; margin: 2rem;"  src="./img/${tienda.logo}">
+    </div>
+    <div class="producto" style="background-image:url(./img/${hombre.ropa})"
+     onclick=" mostrarProductos(3)">
+        <h3>ROPA</h3>
+    </div>
+    <br>
+    <div class="producto" style="background-image:url(./img/${hombre.zapatos}) onclik"mostrarProductos(4)">
+        <h3>ZAPATOS</h3>
+    </div>
+    <br>
+    <div class="producto" style="background-image:url(./img/${hombre.accesorios})" onclick=" obtenerProductos('${codTienda}ma'); mostrarProductos(5)">
+        <h3>ACCESORIOS</h3>
+    </div>
+    <br>
+    `
+}
+
+function mostrarTienda () {
+    let estrellas = '';
+    for (let i=0; i<tienda.calificacion; i++){
+        estrellas += '<i class="fa-solid fa-star"></i> ';
+    }
+    for(let i=0; i<5-tienda.calificacion; i++){
+        estrellas += '<i class="fa-regular fa-star"></i> ';
+    }
+    document.getElementById(codTienda). innerHTML = 
+    `
+    <div>
+    <img style="width:180px; height: 30px; margin: 2rem;"  src="./img/${tienda.logo}" >
+       </div>
+       <div style="color:#FFBA00">
+       ${estrellas}
+       </div>
+       <br>
+       <div style="margin: 0 2rem; text-align:justify">
+       <p>${tienda.descripcion}<p>
+       </div>
+       <br>
+       <div >
+       </div>
+       <div class="genero" style="background-image:url(./img/${categorias.categorias[0].portada})" onclick="mostrarSeccion(1)">
+           <h1>MUJER</h1>
+       </div>
+       <div class="genero" style="background-image:url(./img/${categorias.categorias[1].portada})" onclick="mostrarSeccion(2)">
+           <h1>HOMBRE</h1>
+    </div>
+       <br>
+    `
+}
+
+// Funciones de renderizado de productos-----------------------------------------------------------------
+function renderizarRopaMujer() {
+    
+    document.getElementById('nav-catRopaM').innerHTML =
+    `
+    <i class="fas fa-bars"></i>
+    <i class="fa-solid fa-angles-left" onclick="atras(1)" ></i>
+    <i class="fas fa-search"></i>
+    `
+    document.getElementById('encabezado-ropaM').innerHTML =
+        `
+        <div style="text-align: center">
+            <img style="width:180px; height: 30px; margin: 2rem"  src="./img/${tienda.logo}" >
+        </div>
+        <div class="contenedor-carrito">
+        <h3>ROPA</h3> 
+            <button type="button" class="btn btn-primary btn-carrito" data-bs-toggle="modal" data-bs-target="#modalCarrito">
+                <i class="fa-solid fa-cart-shopping" ></i>
+            </button> 
+        </div>
+        `;
+    
+    ropaMujer.forEach(p => {
+        document.getElementById('ropa-mujer').innerHTML+=
+        ` 
+        <div class="card" style="width: 10rem;">
+            <img src="./img/${p.imagen}" class="card-img-top" >
+            <div class="card-body">
+                <h6 class="card-title">${p.descripcion}</h6>
+                <p class="card-text">${p.precio} HNL</p>
+                <button type="button" class="btn btn-primary btn-comprar" data-bs-toggle="modal" data-bs-target="#modalComprar${p._id}">
+                    comprar
+                </button>
+            </div>
+        </div>
+        `
+        modalComprar(p);
+    });  
+}
+
+function renderizarZapatosMujer() {
+    
+    document.getElementById('nav-catZapatosM').innerHTML =
+    `
+    <i class="fas fa-bars"></i>
+    <i class="fa-solid fa-angles-left" onclick="atras(1)" ></i>
+    <i class="fas fa-search"></i>
+    `
+    document.getElementById('encabezado-zapatosM').innerHTML =
+        `
+        <div style="text-align: center">
+            <img style="width:180px; height: 30px; margin: 2rem"  src="./img/${tienda.logo}" >
+        </div>
+        <div class="contenedor-carrito">
+        <h3>ZAPATOS</h3> 
+            <button type="button" class="btn btn-primary btn-carrito" data-bs-toggle="modal" data-bs-target="#modalCarrito">
+                <i class="fa-solid fa-cart-shopping" ></i>
+            </button> 
+        </div>
+        `;
+    
+    zapatosMujer.forEach(p => {
+        document.getElementById('zapatos-mujer').innerHTML+=
+        ` 
+        <div class="card" style="width: 10rem;">
+            <img src="./img/${p.imagen}" class="card-img-top" >
+            <div class="card-body">
+                <h6 class="card-title">${p.descripcion}</h6>
+                <p class="card-text">${p.precio} HNL</p>
+                <button type="button" class="btn btn-primary btn-comprar" data-bs-toggle="modal" data-bs-target="#modalComprar${p._id}">
+                    comprar
+                </button>
+            </div>
+        </div>
+        `
+        modalComprar(p);
+    });  
+}
+renderizarZapatosMujer()
+
+function renderizarAccesoriosMujer() {
+    
+    document.getElementById('nav-catAccesoriosM').innerHTML =
+    `
+    <i class="fas fa-bars"></i>
+    <i class="fa-solid fa-angles-left" onclick="atras(1)" ></i>
+    <i class="fas fa-search"></i>
+    `
+    document.getElementById('encabezado-accesoriosM').innerHTML =
+        `
+        <div style="text-align: center">
+            <img style="width:180px; height: 30px; margin: 2rem"  src="./img/${tienda.logo}" >
+        </div>
+        <div class="contenedor-carrito">
+        <h3>ACCESORIOS</h3> 
+            <button type="button" class="btn btn-primary btn-carrito" data-bs-toggle="modal" data-bs-target="#modalCarrito">
+                <i class="fa-solid fa-cart-shopping" ></i>
+            </button> 
+        </div>
+        `;
+    
+    accesoriosMujer.forEach(p => {
+        document.getElementById('accesorios-mujer').innerHTML+=
+        ` 
+        <div class="card" style="width: 10rem;">
+            <img src="./img/${p.imagen}" class="card-img-top" >
+            <div class="card-body">
+                <h6 class="card-title">${p.descripcion}</h6>
+                <p class="card-text">${p.precio} HNL</p>
+                <button type="button" class="btn btn-primary btn-comprar" data-bs-toggle="modal" data-bs-target="#modalComprar${p._id}">
+                    comprar
+                </button>
+            </div>
+        </div>
+        `
+        modalComprar(p);
+    });  
+}
+
+//Ventana modal del boton "comprar"
+function modalComprar(producto) {
+    
+    document.getElementById('ropa-mujer').innerHTML =
+    `
+    <div class="modal fade" id="modalComprar${producto._id}" tabindex="-1" aria-labelledby="modalComprarLabel${producto._id}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalComprarLabel${producto._id}">${producto.descripcion}</h1>
+                </div>
+                <div class="modal-body">
+                <select id="talla-${producto._id}" class="form-select" aria-label="Default select example">
+                    <option selected>Seleccionar talla</option>
+                        <option value="XS">XS</option>
+                        <option value="S">S</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btns-modal" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary btns-modal"  onclick="agregarAlCarrito(${producto._id})"  data-bs-dismiss="modal">Agregar al carrito</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    `
+}
+
+function agregarAlCarrito(id){
+    let producto = ropa.find(p => p.id === id);
+    let talla = document.getElementById(`talla-${id}`).value;
+    let item ={
+        producto: producto,
+        talla: talla
+    };
+    carrito.push(item);
+    actualizarCarrito();
+}
+
+function actualizarCarrito(){
+    let modalCarrito = document.getElementById('modalBody');
+    modalCarrito.innerHTML = '';
+    carrito.forEach(item => {
+        modalCarrito.innerHTML += 
+        `
+        <p>${item.producto.nombre} - Talla ${item.talla}</p>
+        <b style="text-aling: right">${item.producto.precio} HNL</b>
+        <hr>
+        `
+        if (carrito.length > 1) {
+            document.getElementById('finalizar-compra').classList.remove('d-none');
+          } else {
+            document.getElementById('finalizar-compra').classList.add('d-none');
+          }
+    });
+}
+
+//Ventanas modales 
+function modalCarrito() {
+    document.getElementById('btnCarrito').innerHTML+=
+    `
+    <div class="modal fade" id="modalCarrito" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Tu carrito</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modalBody">
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="finalizar-compra" class="btn btn-primary  btns-modal">Finalizar compra</button>
+      </div>
+    </div>
+  </div>
+</div>
+    `
+}
+modalCarrito();
